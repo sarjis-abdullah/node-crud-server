@@ -2,25 +2,27 @@ const express = require("express");
 const router = express.Router();
 const dbService = require("../dbService");
 const createError = require("http-errors");
+const { validatedCategory } = require("../helpers/validator");
 
 router.post("/category", (request, response, next) => {
   try {
     const body = request.body;
-    if (!body.name || !body.description) {
-      throw createError.BadRequest();
+    const {error, value} = validatedCategory.validate(body);
+    if (error) {
+      throw error;
     }
-
     const db = dbService.getDbServiceInstance();
 
-    const result = db.save(body);
-    console.log(result, 1234567);
-
+    const result = db.save(value);
     result
       .then((data) => {
         response.json(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err, 7777));
   } catch (error) {
+    if (error.isJoi) {
+      error.status = 422
+    }
     next(error);
   }
 });

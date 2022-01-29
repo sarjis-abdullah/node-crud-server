@@ -5,8 +5,7 @@ POST http://localhost:3001/category
 Content-Type: application/json
 
 {
-  "name": "yourstjjjraauly2678",
-  "description": "1234"
+  "name": "jjh7jg"
 }
 
 
@@ -15,7 +14,7 @@ POST http://localhost:3001/category
 Content-Type: application/json
 
 {
-  "name": "yourstruly267",
+  "name": "yourstroulylk267",
   "description": "1234"
 }
 
