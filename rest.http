@@ -1,0 +1,33 @@
+GET http://localhost:3001/category
+
+###Login Route
+POST http://localhost:3001/category
+Content-Type: application/json
+
+{
+  "name": "yourstjjjraauly2678",
+  "description": "1234"
+}
+
+
+###Register Route
+POST http://localhost:3001/category
+Content-Type: application/json
+
+{
+  "name": "yourstruly267",
+  "description": "1234"
+}
+
+###Register Route
+PUT http://localhost:3001/category/20
+Content-Type: application/json
+
+{
+  "name": "yourstruly267",
+  "description": "1234"
+}
+
+###Logout Route
+DELETE http://localhost:3001/category/0
+Content-Type: application/json

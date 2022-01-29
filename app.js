@@ -1,75 +1,36 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const cors = require('cors');
-const dotenv = require('dotenv');
+const morgan = require("morgan")
+const cors = require("cors");
+const dotenv = require("dotenv");
 dotenv.config();
 
-const dbService = require('./dbService');
+app.use(morgan('combined'))
+
+const dbService = require("./dbService");
+const category = require("./routes/category")
 
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended : false }));
+app.use(express.urlencoded({ extended: false }));
+
+app.use('/', category)
 
 
-// create
-app.post('/category', (request, response) => {
-    const body = request.body;
-    const db = dbService.getDbServiceInstance();
-    
-    const result = db.save(body);
-
-    result
-    .then(data => {
-        response.json(data)
-    })
-    .catch(err => console.log(err));
+app.use(async (req, res, next) => {
+  const error = new Error("Not found anywhere");
+  error.status = 404;
+  next(error);
 });
 
-// read
-app.get('/category', (request, response) => {
-    const db = dbService.getDbServiceInstance();
-    const result = db.index();
-    
-    result
-    .then(data => {
-        response.json({data : data})
-    })
-    .catch(err => console.log(err));
-})
-
-// update
-app.put('/category/:id', (request, response) => {
-    const body = request.body;
-    const { id } = request.params;
-    const db = dbService.getDbServiceInstance();
-    const result = db.update({...body, id: id});
-    
-    result
-    .then(data => response.json(data))
-    .catch(err => console.log(err));
+app.use((err, req, res, next) => {
+  res.status(err.status || 500);
+  res.send({
+    error: {
+      status: err.status || 500,
+      message: err.message,
+    },
+  });
 });
 
-// delete
-app.delete('/category/:id', (request, response) => {
-    const { id } = request.params;
-    const db = dbService.getDbServiceInstance();
-
-    const result = db.delete(id);
-    
-    result
-    .then(data => response.json({success : data}))
-    .catch(err => console.log(err));
-});
-
-app.get('/search/:name', (request, response) => {
-    const { name } = request.params;
-    const db = dbService.getDbServiceInstance();
-
-    const result = db.searchByName(name);
-    
-    result
-    .then(data => response.json({data : data}))
-    .catch(err => console.log(err));
-})
-
-app.listen(process.env.PORT, () => console.log('app is running'));
+app.listen(process.env.PORT, () => console.log("app is running"));
