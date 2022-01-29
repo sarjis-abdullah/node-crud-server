@@ -1,19 +1,28 @@
 const express = require("express");
 const router = express.Router();
 const dbService = require("../dbService");
+const createError = require("http-errors");
 
-router.post("/category", async (request, response) => {
-  const body = request.body;
-  const db = dbService.getDbServiceInstance();
+router.post("/category", (request, response, next) => {
+  try {
+    const body = request.body;
+    if (!body.name || !body.description) {
+      throw createError.BadRequest();
+    }
 
-  const result = db.save(body);
-  console.log(result, 1234567);
+    const db = dbService.getDbServiceInstance();
 
-  result
-    .then((data) => {
-      response.json(data);
-    })
-    .catch((err) => console.log(err));
+    const result = db.save(body);
+    console.log(result, 1234567);
+
+    result
+      .then((data) => {
+        response.json(data);
+      })
+      .catch((err) => console.log(err));
+  } catch (error) {
+    next(error);
+  }
 });
 
 // read
@@ -61,4 +70,4 @@ router.get("/search/:name", (request, response) => {
     .catch((err) => console.log(err));
 });
 
-module.exports = router
+module.exports = router;
