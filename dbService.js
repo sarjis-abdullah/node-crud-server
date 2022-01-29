@@ -30,8 +30,8 @@ class DbService {
                 const query = "SELECT * FROM categories;";
 
                 connection.query(query, (err, results) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(results);
+                    if (err) return reject(new Error(err.message));
+                    return resolve(results);
                 })
             });
             // console.log(response);
@@ -44,17 +44,19 @@ class DbService {
 
     async save(body) {
         try {
-            const {description, name, slug} = body
+            const {description, name} = body
             const dateAdded = new Date();
             const insertId = await new Promise((resolve, reject) => {
-                const query = "INSERT INTO categories (name, description, slug) VALUES (?,?,?);";
+                const query = "INSERT INTO categories (name, description) VALUES (?,?);";
 
-                connection.query(query, [name, description, slug] , (err, result) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(result.insertId);
+                connection.query(query, [name, description] , (err, result) => {
+                    if (err) return reject(new Error(err.message));
+                    return resolve(result.insertId);
                 })
             });
-            
+            if (typeof insertId === "string") {
+                return insertId;
+            }
             return {
                 id : insertId,
                 ...body
@@ -71,8 +73,8 @@ class DbService {
                 const query = "DELETE FROM categories WHERE id = ?";
     
                 connection.query(query, [id] , (err, result) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(result.affectedRows);
+                    if (err) return reject(new Error(err.message));
+                    return resolve(result.affectedRows);
                 })
             });
     
@@ -92,14 +94,14 @@ class DbService {
                 const query = "UPDATE categories SET name = ?, description = ?, slug = ? WHERE id = ?";
     
                 connection.query(query, [name,description, slug, id] , (err, result) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(id);
+                    console.log(err);
+                    if (err) return reject(new Error(err.message));
+                    return resolve(id);
                 })
             });
     
             return {
                 ...body,
-                id: insertId
             }
         } catch (error) {
             console.log(error);
@@ -113,8 +115,8 @@ class DbService {
                 const query = "SELECT * FROM categories WHERE name = ?;";
 
                 connection.query(query, [name], (err, results) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(results);
+                    if (err) return reject(new Error(err.message));
+                    return resolve(results);
                 })
             });
 
