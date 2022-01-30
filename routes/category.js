@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const dbService = require("../dbService");
+const Service = require("../dbService");
 const createError = require("http-errors");
 const { validatedCategory } = require("../helpers/validator");
 
@@ -11,7 +11,9 @@ router.post("/category", (request, response, next) => {
     if (error) {
       throw error;
     }
-    const db = dbService.getDbServiceInstance();
+    const db = new Service();
+    console.log(db.save,3456)
+    // const db = new Service();
 
     db.save(value)
       .then((data) => {
@@ -28,7 +30,7 @@ router.post("/category", (request, response, next) => {
 
 // read
 router.get("/category", (request, response) => {
-  const db = dbService.getDbServiceInstance();
+  const db = new Service();
   const result = db.index();
 
   result
@@ -42,7 +44,7 @@ router.get("/category", (request, response) => {
 router.put("/category/:id", (request, response) => {
   const body = request.body;
   const { id } = request.params;
-  const db = dbService.getDbServiceInstance();
+  const db = new Service();
   const result = db.update({ ...body, id: id });
 
   result.then((data) => response.json(data)).catch((err) => console.log(err));
@@ -51,7 +53,7 @@ router.put("/category/:id", (request, response) => {
 // delete
 router.delete("/category/:id", (request, response) => {
   const { id } = request.params;
-  const db = dbService.getDbServiceInstance();
+  const db = new Service();
 
   const result = db.delete(id);
 
@@ -62,7 +64,7 @@ router.delete("/category/:id", (request, response) => {
 
 router.get("/search/:name", (request, response) => {
   const { name } = request.params;
-  const db = dbService.getDbServiceInstance();
+  const db = new Service();
 
   const result = db.searchByName(name);
 
@@ -74,7 +76,7 @@ router.get("/search/:name", (request, response) => {
 router.post("/validate-category-name", (request, response, next) => {
   try {
     const {name} = request.body;
-    const db = dbService.getDbServiceInstance();
+    const db = new Service();
 
     db.isExist(name)
       .then((data) => {
