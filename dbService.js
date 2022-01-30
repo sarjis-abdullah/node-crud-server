@@ -27,7 +27,7 @@ class DbService {
     async index() {
         try {
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT * FROM categories;";
+                const query = "SELECT * FROM categories ORDER BY id DESC;";
 
                 connection.query(query, (err, results) => {
                     if (err) return reject(new Error(err.message));
@@ -115,6 +115,23 @@ class DbService {
                 const query = "SELECT * FROM categories WHERE name = ?;";
 
                 connection.query(query, [name], (err, results) => {
+                    if (err) return reject(new Error(err.message));
+                    return resolve(results);
+                })
+            });
+
+            return response;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async isExist(value) {
+        try {
+            const response = await new Promise((resolve, reject) => {
+                const query = `SELECT name FROM categories WHERE name = ? LIMIT 1;`;
+
+                connection.query(query, [value], (err, results) => {
                     if (err) return reject(new Error(err.message));
                     return resolve(results);
                 })

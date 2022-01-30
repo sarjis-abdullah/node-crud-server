@@ -14,8 +14,14 @@ POST http://localhost:3001/category
 Content-Type: application/json
 
 {
-  "name": "yourstroulylk267",
-  "description": "1234"
+  "name": "hello9091919"
+}
+###Valid Check
+POST http://localhost:3001/validate-category-name
+Content-Type: application/json
+
+{
+  "name": "hello9091919"
 }
 
 ###Register Route

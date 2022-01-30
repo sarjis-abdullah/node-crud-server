@@ -13,8 +13,7 @@ router.post("/category", (request, response, next) => {
     }
     const db = dbService.getDbServiceInstance();
 
-    const result = db.save(value);
-    result
+    db.save(value)
       .then((data) => {
         response.json(data);
       })
@@ -70,6 +69,36 @@ router.get("/search/:name", (request, response) => {
   result
     .then((data) => response.json({ data: data }))
     .catch((err) => console.log(err));
+});
+
+router.post("/validate-category-name", (request, response, next) => {
+  try {
+    const {name} = request.body;
+    const db = dbService.getDbServiceInstance();
+
+    db.isExist(name)
+      .then((data) => {
+        if (data && data.length) {
+          const error = {
+            "status": 422,
+            "message": "Name is taken"
+          }
+          throw {error}
+        }
+        response.json(data);
+      })
+      .catch((err) => {
+        next(error = {
+          "status": 422,
+          "message": "Name is taken"
+        });
+      });
+  } catch (error) {
+    if (error.isJoi) {
+      error.status = 422
+    }
+    next(error);
+  }
 });
 
 module.exports = router;
