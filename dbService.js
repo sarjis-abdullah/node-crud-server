@@ -1,26 +1,13 @@
-// const mysql = require('mysql');
-// const dotenv = require('dotenv');
-// let instance = null;
-// dotenv.config();
-
-// const connection = mysql.createConnection({
-//     host: process.env.HOST,
-//     user: process.env.USER,
-//     password: process.env.PASSWORD,
-//     database: process.env.DATABASE,
-//     port: process.env.DB_PORT
-// });
-
 const {BaseService, connection} = require("./service/BaseService")
 class DbService extends BaseService {
-    // static getDbServiceInstance() {
-    //     return instance ? instance : new DbService();
-    // }
-
-    async index() {
+    async index(request = {}) {
+        let order_by = 'id';
+        let order_direction = 'DESC';
+        let limit = 5;
+        let table = 'categories'
         try {
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT * FROM categories ORDER BY id DESC;";
+                const query = `SELECT * FROM ${table} ORDER BY ${order_by} ${order_direction} LIMIT ${limit};`;
 
                 connection.query(query, (err, results) => {
                     if (err) return reject(new Error(err.message));
@@ -136,6 +123,5 @@ class DbService extends BaseService {
         }
     }
 }
-const a = new DbService
-console.log(a.index)
+
 module.exports = DbService;

@@ -1,11 +1,12 @@
-GET http://localhost:3001/category
+GET http://localhost:3001/category?name=hello&description=no
 
 ###Login Route
 POST http://localhost:3001/category
 Content-Type: application/json
 
 {
-  "name": "jjh7jg"
+  "name": "hekdddelekej",
+  "description": "1234"
 }
 
 
@@ -21,18 +22,18 @@ POST http://localhost:3001/validate-category-name
 Content-Type: application/json
 
 {
-  "name": "hello9091919"
+  "name": "hekdddelekej"
 }
 
 ###Register Route
-PUT http://localhost:3001/category/20
+PUT http://localhost:3001/category/30
 Content-Type: application/json
 
 {
-  "name": "yourstruly267",
+  "name": "yourjstruly267",
   "description": "1234"
 }
 
 ###Logout Route
-DELETE http://localhost:3001/category/0
+DELETE http://localhost:3001/category/30
 Content-Type: application/json

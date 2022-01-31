@@ -25,5 +25,3 @@ class BaseService {
 }
 
 module.exports = {BaseService, connection}
-
-console.log(typeof connection, 123)

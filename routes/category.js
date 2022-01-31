@@ -12,8 +12,6 @@ router.post("/category", (request, response, next) => {
       throw error;
     }
     const db = new Service();
-    console.log(db.save,3456)
-    // const db = new Service();
 
     db.save(value)
       .then((data) => {
@@ -31,7 +29,7 @@ router.post("/category", (request, response, next) => {
 // read
 router.get("/category", (request, response) => {
   const db = new Service();
-  const result = db.index();
+  const result = db.index(request.query);
 
   result
     .then((data) => {
