@@ -7,8 +7,8 @@ dotenv.config();
 
 app.use(morgan('combined'))
 
-const dbService = require("./dbService");
-const category = require("./routes/category")
+// const dbService = require("./dbService");
+// const category = require("./routes/category")
 
 //middleware
 const coreOptions = {
@@ -20,8 +20,18 @@ app.use(express.urlencoded({ extended: false }));
 
 //APIs
 
-app.use('/', category)
+// app.use('/', category)
 
+app.get('/users', async (req, res) => {
+  try {
+    const users = await User.findAll()
+
+    return res.json(users)
+  } catch (err) {
+    console.log(err)
+    return res.status(500).json({ error: 'Something went wrong' })
+  }
+})
 
 app.use(async (req, res, next) => {
   const error = new Error("Not found anywhere");
@@ -39,4 +49,12 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(process.env.PORT, () => console.log("app is running"));
+const { sequelize, User, Post } = require('./models')
+
+
+const PORT = process.env.PORT || 3001
+app.listen({ port: PORT }, async () => {
+  console.log(`Server up on ${PORT}`)
+  await sequelize.authenticate()
+  console.log('Database Connected!')
+})
