@@ -10,9 +10,15 @@ app.use(morgan('combined'))
 const dbService = require("./dbService");
 const category = require("./routes/category")
 
-app.use(cors());
+//middleware
+const coreOptions = {
+  origin: "http://localhost:3001/"
+}
+app.use(cors(coreOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+//APIs
 
 app.use('/', category)
 
