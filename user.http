@@ -1,0 +1,31 @@
+GET http://localhost:3001/user
+
+###Login Route
+POST http://localhost:3001/user
+Content-Type: application/json
+
+{
+  "name": "hekZSdaAdpdselekej",
+  "email": "aaAa@gmail.com"
+}
+
+###Valid Check
+POST http://localhost:3001/validate-category-name
+Content-Type: application/json
+
+{
+  "name": "hekdddelekej"
+}
+
+###Register Route
+PUT http://localhost:3001/user/3
+Content-Type: application/json
+
+{
+  "name": "1234",
+  "email": "aaa@gmail.com"
+}
+
+###Logout Route
+DELETE http://localhost:3001/user/3
+Content-Type: application/json

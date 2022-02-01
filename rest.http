@@ -1,4 +1,4 @@
-GET http://localhost:3001/usersd
+GET http://localhost:3001/category
 
 ###Login Route
 POST http://localhost:3001/category

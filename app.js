@@ -6,9 +6,12 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 app.use(morgan('combined'))
+const { sequelize, User } = require('./models')
 
 // const dbService = require("./dbService");
 // const category = require("./routes/category")
+const userResource = require("./routes/user")
+const categoryResource = require("./routes/category")
 
 //middleware
 const coreOptions = {
@@ -20,18 +23,10 @@ app.use(express.urlencoded({ extended: false }));
 
 //APIs
 
-// app.use('/', category)
+// app.use("/",categoryResource)
+app.use("/",categoryResource)
+app.use("/",userResource)
 
-app.get('/users', async (req, res) => {
-  try {
-    const users = await User.findAll()
-
-    return res.json(users)
-  } catch (err) {
-    console.log(err)
-    return res.status(500).json({ error: 'Something went wrong' })
-  }
-})
 
 app.use(async (req, res, next) => {
   const error = new Error("Not found anywhere");
@@ -48,9 +43,6 @@ app.use((err, req, res, next) => {
     },
   });
 });
-
-const { sequelize, User, Post } = require('./models')
-
 
 const PORT = process.env.PORT || 3001
 app.listen({ port: PORT }, async () => {
