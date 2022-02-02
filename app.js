@@ -11,7 +11,7 @@ const { sequelize, User } = require('./models')
 // const dbService = require("./dbService");
 // const category = require("./routes/category")
 const userResource = require("./routes/user")
-const categoryResource = require("./routes/category")
+const categoryResource = require("./routes/category2")
 
 //middleware
 const coreOptions = {

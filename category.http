@@ -1,0 +1,31 @@
+GET http://localhost:3001/category
+
+###Login Route
+POST http://localhost:3001/category
+Content-Type: application/json
+
+{
+  "name": "First Level",
+  "categoryId": 3
+}
+
+###Valid Check
+POST http://localhost:3001/validate-category-name
+Content-Type: application/json
+
+{
+  "name": "hekdddelekej"
+}
+
+###Register Route
+PUT http://localhost:3001/category/3
+Content-Type: application/json
+
+{
+  "name": "Second Level",
+  "userId": 1
+}
+
+###Logout Route
+DELETE http://localhost:3001/category/3
+Content-Type: application/json
